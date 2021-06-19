@@ -1,0 +1,53 @@
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input{
+  box-shadow: none !important;
+}
+
+.auth-form{
+  @apply flex flex-col m-auto mt-40 w-80 md:w-96 h-screen;
+}
+
+.btn{
+  @apply px-5 py-2 rounded-sm focus:outline-none;
+}
+
+.btn-primary{
+  @apply text-white bg-blue-700 hover:bg-blue-800;
+}
+
+.btn-secondary{
+  @apply border shadow-sm hover:bg-gray-100;
+}
+
+.btn-link{
+  @apply hover:bg-red-100;
+}
+
+.danger{
+  @apply text-red-700;
+}
+
+.primary{
+  @apply text-blue-700;
+}
+
+.btn-block{
+  @apply w-full;
+}
+
+.form-control{
+  @apply font-light px-2 py-1.5 border rounded-sm w-80 md:w-96 focus:border-blue-700 focus:outline-none;
+}
+
+.header{
+  @apply text-4xl font-bold text-blue-700;
+}
+
+.sub-header{
+  @apply text-xs text-gray-700;
+}
+
