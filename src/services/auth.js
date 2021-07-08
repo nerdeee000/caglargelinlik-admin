@@ -3,7 +3,7 @@ import axios from 'axios';
 const baseURL = 'http://localhost:8000/api/';
 
 const signinWithPhone = async (phone) => {
-    const response = await axios.post(baseURL + 'signin-phone', { phone: phone});
+    const response = await axios.post(baseURL + 'signin-phone', { phone: phone });
     return response.data;
 }
 

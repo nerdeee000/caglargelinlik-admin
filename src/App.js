@@ -1,11 +1,10 @@
 import './App.css';
-import { Link } from 'react-router-dom'
-import { authenticate, isAuth } from './pages/auth/Helpers';
-
+import { isAuth } from './pages/auth/Helpers';
+import Home from './pages/Home'
 function App() {
   return (
     <div>
-      { isAuth() ? "Home" :  null}
+      { isAuth() ? <Home/> :  null}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import AuthLayout from '../../core/auth'
+import AuthLayout from '../../core/AuthLayout'
 import AuthService from '../../services/auth'
 import { authenticate } from './Helpers';
 import { useHistory } from 'react-router-dom'

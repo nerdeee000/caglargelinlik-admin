@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { isAuth } from '../pages/auth/Helpers';
 import { Redirect } from 'react-router-dom'
-export default function auth({children}) {
+export default function AuthLayout({children}) {
     return (
         <Fragment>
             { 
