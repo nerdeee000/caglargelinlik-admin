@@ -1,11 +1,11 @@
 import './App.css';
-import { isAuth } from './pages/auth/Helpers';
+import MainLayout from './core/MainLayout';
 import Home from './pages/Home'
 function App() {
   return (
-    <div>
-      { isAuth() ? <Home/> :  null}
-    </div>
+    <MainLayout>
+        <Home/>
+    </MainLayout>
   );
 }
 

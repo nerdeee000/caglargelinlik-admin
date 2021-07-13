@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { MultiStepForm, Step } from 'react-multi-form';
 import CostumerService from '../services/costumer'
+import RoutingInfo from '../components/RoutingInfo'
 
 let date_regex = /^(0?[1-9]|[12][0-9]|3[01])[-](0?[1-9]|1[012])[-]\d{4}$/
 
@@ -27,7 +28,7 @@ const validationSchema = Yup.object({
     remaining: Yup.number().typeError("Yalnızca numara girişi kabul edilir.").min(0, "Tutarları doğru girdiğinizden emin olunuz."),
 });
 
-export default function Costumer() {
+export default function CostumerAdd() {
 
     const [costumerSaveError, setCostumerSaveError] = useState("");
 
@@ -58,7 +59,7 @@ export default function Costumer() {
             henna_date: '',
             engagement_date: '',
             product_code: '',
-            test_date: '',
+            test_date: Date,
             package_going_date: '',
             package_return_date: '',
             payer: '',
@@ -67,7 +68,6 @@ export default function Costumer() {
             remaining:'',
             sendSms: undefined,
         },
-        validationSchema,
         onSubmit: (values) => {
             CostumerService.saveCostumer(values)
             .then((response)=>{
@@ -131,6 +131,7 @@ export default function Costumer() {
     return (
         <MainLayout>
                 <div className="flex flex-col mt-16 mx-auto mx-20 max-w-sm">
+                    <RoutingInfo route={["Müşteri Listesi", "Müşteri Kayıt"]}/>
                     <MultiStepForm accentColor='#0066ff' activeStep={formStep}>
                         <Step label="KİSİSEL BİLGİLER">
                             <div className="flex flex-col">
@@ -179,7 +180,7 @@ export default function Costumer() {
                                     </div>
                                 </div>
                                 
-                                <input type="text" className="form-control mb-2" name="test_date" value={test_date} onChange={handleChange} placeholder="Prova Tarihi"/>
+                                <input type="date" className="form-control mb-2" name="test_date" value={test_date} onChange={handleChange} placeholder="Prova Tarihi"/>
                                 { errors.test_date ? <p className="error-message">{errors.test_date}</p> : null}
                                 <input type="text" className="form-control mb-2" name="package_going_date" value={package_going_date} onChange={handleChange} placeholder="Paket Gidiş Tarihi"/>
                                 { errors.package_going_date ? <p className="error-message">{errors.package_going_date}</p> : null}
@@ -194,7 +195,7 @@ export default function Costumer() {
                                 { errors.total ? <p className="error-message">{errors.total}</p> : null}
                                 <input type="text" className="form-control mb-2" name="down_payment" value={down_payment} onChange={e=>handleChangeDownPayment(e, setFieldValue)} placeholder="Kapora"/>
                                 { errors.down_payment ? <p className="error-message">{errors.down_payment}</p> : null}
-                                <input type="text" className="form-control mb-2" name="remaining" value={remaining} onChange={handleChange} disabled placeholder="Kalan"/>
+                                <input type="text" className="form-control mb-2" name="remaining" value={remaining} disabled onChange={handleChange} placeholder="Kalan"/>
                                 { errors.remaining ? <p className="error-message">{errors.remaining}</p> : null}
                                 <input type="text" className="form-control mb-2" name="payer" value={payer} onChange={handleChange} placeholder="Ödemeyi Yapan"/>
                                 { errors.payer ? <p className="error-message">{errors.payer}</p> : null}

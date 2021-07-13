@@ -43,6 +43,22 @@ const saveCostumer = async ( values ) => {
     return response.data;
 }
 
-const costumer = { saveCostumer };
+const listCostumer = async () => {
+    const response = await axios.get(baseURL + 'costumer-list') ;
+    return response.data;
+}
+
+const detailCostumer = async (id) => {
+    const response = await axios.get(baseURL + `${id}`) ;
+    return response.data;
+}
+
+const getRemainingAmount = async (id) => {
+    const response = await axios.get(baseURL + 'make-pay/' + `${id}`) ;
+    return response.data.remaining;
+}
+
+
+const costumer = { saveCostumer, listCostumer, detailCostumer, getRemainingAmount };
 
 export default costumer;

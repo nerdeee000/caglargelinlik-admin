@@ -37,7 +37,7 @@ export const removeLocalStorage = (key) => {
 }
 
 export const authenticate = (response, next) => {
-    console.log('AUTHENTICATE HELPER ON SIGNIN RESPONSE', response);
+    console.log("Giriş yapıldı.");
     setCookie('token', response.token);
     setLocalStorage('user', response.user);
     next();
@@ -59,8 +59,8 @@ export const isAuth = () => {
     }
 }
 
-export const signout = next => {
+export const signout = () => {
     removeCookie('token');
     removeLocalStorage('user');
-    next();
+    console.log("Güvenli çıkış yapıldı.")
 }

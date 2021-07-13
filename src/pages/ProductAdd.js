@@ -3,6 +3,7 @@ import MainLayout from '../core/MainLayout'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import ProductService from '../services/product'
+import RoutingInfo from '../components/RoutingInfo'
 
 const validationSchema = Yup.object({
     product_code: Yup.string().required("Zorunlu alan. Boş Bırakılamaz!"),
@@ -11,7 +12,11 @@ const validationSchema = Yup.object({
 });
 
 
-export default function Product() {
+export default function ProductAdd() {
+
+    const refreshPage = () => {
+        window.location.reload(false);
+    }
 
     const { setFieldValue, handleSubmit, handleChange, values, errors, isValid } = useFormik({
         initialValues: {
@@ -40,6 +45,7 @@ export default function Product() {
             .then((response)=>{
                 console.log(response)
                 console.log("Product save successfully");
+                refreshPage()
             })
             .catch((error) => {
                 console.log(error.response.data.error);
@@ -101,6 +107,8 @@ export default function Product() {
     return (
         <MainLayout>
                 <div className="flex flex-col mt-16 mx-auto mx-20 max-w-sm">
+                <RoutingInfo route={["Ürün Listesi", "Ürün Ekleme"]}/>
+
                     <div className="flex items-center justify-center relative border border-4 h-20 rounded-md border-white border-dashed text-white mb-2 bg-gradient-to-r from-blue-500 to-blue-600">
                         <input onChange={e=>handleFileItem(e, setFieldValue)} multiple className="absolute h-20 w-full" type="file" name="bride" id=""/>
                         <div className="flex flex-col items-center">

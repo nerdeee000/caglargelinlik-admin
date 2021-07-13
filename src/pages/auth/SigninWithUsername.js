@@ -23,13 +23,11 @@ export default function SigninWithUsername() {
         },
         validationSchema,
 		onSubmit: async (values) => {
-            console.log(values)
             const { username, password } = values;
             await AuthService.signinWithUsername(username,password)
             .then((response)=>{
-                console.log("Signup success...");
                 authenticate(response, ()=>{
-                    console.log(response)
+                    //console.log(response)
                 })
             })
             .catch((error) => {

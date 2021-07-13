@@ -7,6 +7,11 @@ const saveProduct = async ( formData, config ) => {
         return response.data;
 }
 
+const listProduct = async () => {
+        const response = await axios.get(baseURL + 'product-list');
+        return response.data;
+}
+
 const product = { saveProduct };
 
 export default product;
