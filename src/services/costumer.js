@@ -58,7 +58,19 @@ const getRemainingAmount = async (id) => {
     return response.data.remaining;
 }
 
+const makePay = async (values, id) => {
+    const { payer, amount } = values;
+    console.log(payer, amount)
+    const response = await axios.put(baseURL + 'make-pay/' + `${id}`, { payer, amount}) ;
+    return response.data;
+}
 
-const costumer = { saveCostumer, listCostumer, detailCostumer, getRemainingAmount };
+const cancelMakePay = async (id, amount) => {
+    const response = await axios.put(baseURL + 'make-pay-cancel/' + `${id}`, { amount: amount}) ;
+    return response.data;
+}
+
+
+const costumer = { saveCostumer, listCostumer, detailCostumer, getRemainingAmount, makePay, cancelMakePay };
 
 export default costumer;

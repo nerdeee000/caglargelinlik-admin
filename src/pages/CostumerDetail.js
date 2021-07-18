@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Check } from '../utils/Icons'
 import CostumerService from '../services/costumer'
 import MainLayout from '../core/MainLayout'
 import RoutingInfo from '../components/RoutingInfo'
@@ -8,7 +8,7 @@ import QRCode from 'qrcode.react';
 export default function CostumerDetail({match}) {
 
     const [personal, setPersonal] = useState({})
-    const [paymentHistory, setPaymentHistory] = useState([])
+    const [payment, setPayment] = useState({})
     const [product, setProduct] = useState({})
     
     useEffect(() => {
@@ -17,7 +17,7 @@ export default function CostumerDetail({match}) {
             const { personal, product, payment } = data;
             setPersonal(personal)
             setProduct(product)
-            setPaymentHistory(payment.payment_history.reverse());
+            setPayment(payment);
         }
         init();
     }, []);
@@ -26,10 +26,11 @@ export default function CostumerDetail({match}) {
         <MainLayout>
             <div className="flex flex-col mx-auto max-w-xl">
                 <RoutingInfo route={["Müşteri Listesi", "Müşteri Detay Görüntüleme"]}/>
+                <p className="sub-header">Aşağıdaki <span className="font-bold rounded-md bg-yellow-300 p-0.5">QR Code</span> sayesinde prova tarihinize kalan süreyi görebilecek kayıtlı bilgilerinize rahatça ulaşabileceksiniz.</p>
 
                 <div className="flex mt-4 p-5 border rounded-md">
-                    <div className="bg-gray-50 border rounded-md p-3">
-                        <QRCode size={100} value="http://instagram.com/" />
+                    <div className="flex flex-col items-center bg-gray-50 px-4 pt-10 border rounded-md">
+                        <QRCode size={100} value="Rabia Nasılsın" />
                     </div>
                     <div className="flex flex-col ml-5">
                         <h1 className="text-lg font-medium bg-gray-100 border rounded-md p-2">Kişisel Bilgiler</h1>
@@ -94,8 +95,15 @@ export default function CostumerDetail({match}) {
                         </div>
                     </div>
                 </div> 
-                <button className="btn btn-danger mt-4">Müşteriyi Sil</button>
-                <p className="sub-header mt-2">Bu işlem geri <span className="font-bold">alınamaz.</span> Lütfen dikkatli olunuz.</p>
+                <div className="flex justify-between">
+                    <div className="flex-1 mr-5">
+                        <button className="btn btn-danger btn-block mt-4">Müşteriyi Sil</button>
+                        <p className="sub-header mt-2">Bu işlem geri <span className="font-bold">alınamaz.</span> Lütfen dikkatli olunuz.</p>
+                    </div>
+                    <div className="flex-1 ml-5">
+                        <button className="btn btn-primary btn-block mt-4">Yazdır</button>
+                    </div>
+                </div>
             </div>
         </MainLayout>
     )

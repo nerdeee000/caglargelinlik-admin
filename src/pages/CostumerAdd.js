@@ -55,13 +55,13 @@ export default function CostumerAdd() {
 			primary_phone: '+90',
 			secondary_phone: '+90',
             address: '',
-            wedding_date:'',
-            henna_date: '',
-            engagement_date: '',
+            wedding_date: Date,
+            henna_date: Date,
+            engagement_date: Date,
             product_code: '',
             test_date: Date,
-            package_going_date: '',
-            package_return_date: '',
+            package_going_date: Date,
+            package_return_date: Date,
             payer: '',
             total:'',
             down_payment: '',
@@ -126,6 +126,14 @@ export default function CostumerAdd() {
                 }
                 console.log(values)
             }
+            
+            const _onFocus = (e) => {
+                e.currentTarget.type = "date";
+            }
+
+            const _onBlur = (e) => {
+                e.currentTarget.type = "text";
+            }
         
 
     return (
@@ -143,11 +151,11 @@ export default function CostumerAdd() {
                                 { errors.secondary_phone ? <p className="error-message">{errors.secondary_phone}</p> : null}
                                 <textarea className="form-control resize-none mb-2" name="address" value={address} onChange={handleChange} placeholder="Adres"></textarea>
                                 { errors.address ? <p className="error-message">{errors.address}</p> : null}
-                                <input type="text" className="form-control mb-2" name="wedding_date" value={wedding_date} onChange={handleChange} placeholder="Düğün Tarihi"/>
+                                <input type="text" onFocus = {_onFocus} onBlur= {_onBlur} className="form-control mb-2" name="wedding_date" value={wedding_date} onChange={handleChange} placeholder="Düğün Tarihi"/>
                                 { errors.wedding_date ? <p className="error-message">{errors.wedding_date}</p> : null}
-                                <input type="text" className="form-control mb-2" name="henna_date" value={henna_date} onChange={handleChange} placeholder="Kına Tarihi"/>
+                                <input type="text" onFocus = {_onFocus} onBlur= {_onBlur} className="form-control mb-2" name="henna_date" value={henna_date} onChange={handleChange} placeholder="Kına Tarihi"/>
                                 { errors.henna_date ? <p className="error-message">{errors.henna_date}</p> : null}
-                                <input type="text" className="form-control mb-2" name="engagement_date" value={engagement_date} onChange={handleChange} placeholder="Nişan Tarihi"/>
+                                <input type="text" onFocus = {_onFocus} onBlur= {_onBlur} className="form-control mb-2" name="engagement_date" value={engagement_date} onChange={handleChange} placeholder="Nişan Tarihi"/>
                                 { errors.engagement_date ? <p className="error-message">{errors.engagement_date}</p> : null}
                                 <div className="flex items-center mb-3">
                                     <input value={sendSms} onChange={e=>sendSmsControl(e, setFieldValue)} type="checkbox" name="sendSms" id=""/>
@@ -180,11 +188,11 @@ export default function CostumerAdd() {
                                     </div>
                                 </div>
                                 
-                                <input type="date" className="form-control mb-2" name="test_date" value={test_date} onChange={handleChange} placeholder="Prova Tarihi"/>
+                                <input type="text" onFocus = {_onFocus} onBlur= {_onBlur} placeholder="Prova Tarihi" className="form-control mb-2" name="test_date" value={test_date} onChange={handleChange}/>
                                 { errors.test_date ? <p className="error-message">{errors.test_date}</p> : null}
-                                <input type="text" className="form-control mb-2" name="package_going_date" value={package_going_date} onChange={handleChange} placeholder="Paket Gidiş Tarihi"/>
+                                <input type="text" onFocus = {_onFocus} onBlur= {_onBlur} className="form-control mb-2" name="package_going_date" value={package_going_date} onChange={handleChange} placeholder="Paket Gidiş Tarihi"/>
                                 { errors.package_going_date ? <p className="error-message">{errors.package_going_date}</p> : null}
-                                <input type="text" className="form-control mb-2" name="package_return_date" value={package_return_date} onChange={handleChange} placeholder="Paket Dönüş Tarihi"/>
+                                <input type="text" onFocus = {_onFocus} onBlur= {_onBlur} className="form-control mb-2" name="package_return_date" value={package_return_date} onChange={handleChange} placeholder="Paket Dönüş Tarihi"/>
                                 { errors.package_return_date ? <p className="error-message">{errors.package_return_date}</p> : null}
                                 
                             </div>
@@ -209,15 +217,12 @@ export default function CostumerAdd() {
 
                     {
                         formStep === 4 ?
-                        <div className="flex flex-col items-center">
+                        <div className="flex flex-col bg-green-50 border border-green-700 p-4 rounded-md items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-9 w-9 text-green-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
-                            <h1 className="font-bold text-xl my-3">KAYIT BAŞARI İLE TAMAMLANDI</h1>
-                            <p className="font-light text-sm text-center">Kayıt tamamlanmıştır. Bir sonraki kayıt için 'YENİ MÜŞTERİ' tuşunu kullanmalısınız.</p>
-                            <Link to="/costumer">
-                                <button onClick = { refreshPage } className="flex-1 mt-3 btn primary">YENİ MÜŞTERİ</button>
-                            </Link>
+                            <h1 className="font-bold text-xl text-green-800 my-3">KAYIT BAŞARI İLE TAMAMLANDI</h1>
+                            <p className="font-light text-sm text-green-800 text-center">Kayıt tamamlanmıştır. Bir sonraki kayıt için 'YENİ MÜŞTERİ' tuşunu kullanmalısınız.</p>
                         </div> : 
                         <div className="flex">
                             {formStep !== 1 && (

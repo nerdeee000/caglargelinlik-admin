@@ -7,7 +7,7 @@ export default function RoutingInfo({route}) {
         <div className="flex flex-wrap mb-5 px-4 py-2 items-center bg-gray-50 border rounded-md">
             {
                 routing.map((route,index) =>(
-                   <Fragment>
+                   <Fragment key={index}>
                        {
                             routing.length-1 === index ?
                             null

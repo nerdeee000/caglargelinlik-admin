@@ -5,19 +5,24 @@ import MainLayout from '../core/MainLayout'
 import { useHistory } from 'react-router-dom'
 import MakePay from './MakePay';
 import DatePicker from "react-datepicker";
+import ReactPaginate from 'react-paginate';
 import "react-datepicker/dist/react-datepicker.css";
 import { setDefaultLocale } from  "react-datepicker";
 import tr from 'date-fns/locale/tr';
-
-
 export default function CostumerList({match}) {
 
     const [user, setUser] = useState([]);
-    const [startDate, setStartDate] = useState(new Date());
-    const [finishDate, setFinishDate] = useState(new Date());
-    const [filterSearch, setFilterSearch] = useState('');
-
+    const [startDate, setStartDate] = useState("");
+    const [finishDate, setFinishDate] = useState("");
+    const [filterSearch, setFilterSearch] = useState("");
+    const [pageNumber, setPageNumber] = useState(0)
+    
     let history = useHistory();
+
+    const userPerPage = 5;
+    const pagesVisited = pageNumber * userPerPage;
+
+    const displayUsers = user.slice(pagesVisited, pagesVisited + userPerPage);    
 
     const goDetailPage = (userItem) => {
         history.push(`/costumer/${userItem._id}`);
@@ -25,7 +30,6 @@ export default function CostumerList({match}) {
 
     useEffect(() => {
         const init = async () => {
-            setDefaultLocale('tr', tr);
             const userList = await CostumerService.listCostumer();
             setUser(userList);
         }
@@ -58,13 +62,19 @@ export default function CostumerList({match}) {
         return `${data.slice(2,data.length)}`;
     }
 
+
+    const handlePageClick = ({selected}) => {
+        setPageNumber(selected)
+    }
+    
+
     return (
         <MainLayout>
             <div className="container mx-auto min-w-max bg-gray-100 p-4 border rounded-md">
                 <div className="flex">
                     <div className="flex-1">
-                        <DatePicker className="form-control-sm bg-gray-50" dateFormat="dd/MM/yyyy" selected={startDate} onChange={(date)=>setStartDate(date)} />                       
-                        <DatePicker className="form-control-sm bg-gray-50 ml-2"  dateFormat="dd/MM/yyyy" selected={finishDate} onChange={(date)=>setFinishDate(date)} />
+                        <DatePicker placeholderText="Filtrelenecek İlk Tarih" className="form-control-sm bg-gray-50" dateFormat="dd/MM/yyyy" selected={startDate} onChange={(date)=>{setStartDate(date)}} />                       
+                        <DatePicker placeholderText="Filtrelenecek Son Tarih" className="form-control-sm bg-gray-50 ml-2"  dateFormat="dd/MM/yyyy" selected={finishDate} onChange={(date)=>{setFinishDate(date)}} /> 
                         <div className="flex items-center mt-3 mb-4">
                             <Calendar/>
                             <p className="sub-header ml-1">İki tarih seçerek, arasında bulunan tüm <span className="font-medium bg-yellow-200 px-1 p-0.5 rounded-md">PROVA GÜNLERİNİ</span> getirmesini sağlayabilirsiniz.</p>
@@ -78,7 +88,7 @@ export default function CostumerList({match}) {
                         <p className="sub-header mt-3 mb-4">Tüm müşterilerde <span className="font-medium bg-yellow-200 px-1 p-0.5 rounded-md">Ad Soyad</span> ve <span className="font-medium rounded-md bg-yellow-200 px-1 p-0.5">Telefon</span> gibi özellikleri arayabilirsiniz.</p>
                     </div>
                 </div>
-                <div className="overflow-x-auto border rounded-md mt-3 p-4 bg-gray-50">
+                <div className="overflow-x-auto border rounded-t-md mt-3 p-4 bg-gray-50">
                     <table className="container mx-auto">
                         <thead>
                             <tr className="border-transparent border-l-4">
@@ -92,15 +102,22 @@ export default function CostumerList({match}) {
                         </thead>
                         <tbody>
                             { 
-                                user.filter((val)=>{
-                                    if( filterSearch === ""){
-                                        return val;
-                                    } else if( val.personal.name_surname.toLowerCase().includes(filterSearch.toLowerCase()) || val.personal.primary_phone.includes(filterSearch.toLowerCase())) {
-                                        return val;
-                                    }
+                                displayUsers.filter((val)=>{
+                                        if( filterSearch === ""){
+                                            return val;
+                                        } else if( val.personal.name_surname.toLowerCase().includes(filterSearch.toLowerCase()) || val.personal.primary_phone.includes(filterSearch.toLowerCase())) {
+                                            return val;
+                                        }
+                                    }).filter((val)=>{
+                                        if(startDate === "" || finishDate === ""){
+                                            return val;
+                                        }
+                                        else if(new Date(startDate) - new Date(val.product.test_date) <= 0 && new Date(finishDate) - new Date(val.product.test_date) >= 0){
+                                            return val;
+                                        }
                                     }).map((userItem, index) => (
                                     <tr className="hover:bg-gray-100" key={index}>
-                                        <td>{++index}</td>
+                                        <td>{index}</td>
                                         <td className="hover:underline hover:" onClick={()=>goDetailPage(userItem)}>{userItem.personal.name_surname}</td>
                                         <td>{phoneFormat(userItem.personal.primary_phone)}</td>
                                         <td>{formatDate(`${userItem.product.test_date}`)}</td>
@@ -139,6 +156,20 @@ export default function CostumerList({match}) {
                         </tbody>
                     </table>
                 </div> 
+                <ReactPaginate
+                    previousLabel={'Geri'}
+                    previousClassName={'btn btn-primary mr-4'}
+                    nextLabel={'Sonraki'}
+                    onPageChange={handlePageClick}
+                    nextClassName={'btn btn-primary ml-4'}
+                    breakLabel={'...'}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    containerClassName={'flex items-center py-3 justify-end pr-7 border-b border-l border-r rounded-b-md'}
+                    activeClassName={'bg-blue-700 font-bold text-white'}
+                    pageCount={Math.ceil(user.length/userPerPage)}
+                    pageClassName={'flex items-center justify-center p-4 rounded-full w-5 h-5'}
+                />
             </div>
         </MainLayout>
     )
