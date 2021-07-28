@@ -8,9 +8,9 @@ export default function AuthLayout({children}) {
                 isAuth() ? <Redirect to='/' /> :   
                 <div className="auth-form text-center">
                 <h2 className="header mb-7">caglargelinlik.com</h2>
-                {children}
+                    {children}
                 <p className="sub-header mt-7">
-                    ©caglargelinlik.com bu yönetim panelinin tüm hakları saklıdır. 
+                    © caglargelinlik.com bu yönetim panelinin tüm hakları saklıdır. 
                     Her türlü güvenlik önlemi alınmış olup, başarısız girişim tehditleri tespit edilirse 
                     anayasal olarak dava için delil sayılır.
                 </p>

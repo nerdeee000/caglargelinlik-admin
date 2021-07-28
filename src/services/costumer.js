@@ -12,6 +12,8 @@ const saveCostumer = async ( values ) => {
             henna_date,
             engagement_date,
             product_code,
+            new_status,
+            sale_status,
             test_date,
             package_going_date,
             package_return_date,
@@ -19,7 +21,8 @@ const saveCostumer = async ( values ) => {
             total,
             down_payment,
             remaining,
-            sendSms } = values;
+            sendSms,
+            worker } = values;
 
     const response = await axios.post(baseURL + 'costumer-save', { 
             
@@ -31,6 +34,8 @@ const saveCostumer = async ( values ) => {
             henna_date,
             engagement_date,
             product_code,
+            new_status,
+            sale_status,
             test_date,
             package_going_date,
             package_return_date,
@@ -38,7 +43,8 @@ const saveCostumer = async ( values ) => {
             total,
             down_payment,
             remaining,
-            sendSms
+            sendSms,
+            worker
     });
     return response.data;
 }
@@ -70,7 +76,37 @@ const cancelMakePay = async (id, amount) => {
     return response.data;
 }
 
+const deleteCostumer = async (id) => {
+    const response = await axios.delete(baseURL + 'costumer-delete/' + `${id}`) ;
+    return response.data;
+}
 
-const costumer = { saveCostumer, listCostumer, detailCostumer, getRemainingAmount, makePay, cancelMakePay };
+const getPaymentData = async () => {
+    const response = await axios.get(baseURL + 'payment-data') ;
+    return response.data;
+}
+
+const getEarningChart = async () => {
+    const response = await axios.get(baseURL + 'earning-chart') ;
+    return response.data;
+}
+
+const getDamageChart = async () => {
+    const response = await axios.get(baseURL + 'damage-chart') ;
+    return response.data;
+}
+
+const addDamage = async (values) => {
+    const { process_type, process_amount }  = values;
+    const response = await axios.post(baseURL + 'damage-add', { process_type: process_type, process_amount: process_amount}) ;
+    return response.data;
+}
+
+const findWorker = async () => {
+    const response = await axios.get(baseURL + 'find-worker') ;
+    return response.data;
+}
+
+const costumer = { saveCostumer, listCostumer, detailCostumer, getRemainingAmount, makePay, cancelMakePay, deleteCostumer, getPaymentData, addDamage, getEarningChart, getDamageChart, findWorker };
 
 export default costumer;

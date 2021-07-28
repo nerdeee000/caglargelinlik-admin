@@ -9,10 +9,6 @@ export default function Signin() {
             <Link to="/signin/with-username">
                 <button className="btn btn-primary btn-block">Kullanıcı adı ile devam et</button>
             </Link>
-            <hr className="my-3"/>
-            <Link to="/signin/with-phone">
-                <button className="btn btn-secondary btn-block">Telefon numarası ile devam et</button>
-            </Link>
         </AuthLayout>
     )
 }

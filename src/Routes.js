@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import App from './App'
 import Signin from './pages/auth/Signin'
 import SigninUsername from './pages/auth/SigninWithUsername'
-import SigninPhone from './pages/auth/SigninWithPhone'
-import VerifyAccount from './pages/auth/VerifyAccount'
 import CostumerAdd from './pages/CostumerAdd'
 import CostumerList from './pages/CostumerList'
 import CostumerDetail from './pages/CostumerDetail'
@@ -20,8 +18,6 @@ const Routes = () => {
                 <Route path="/" exact component={ App }/>
                 <Route path="/signin" exact component={ Signin }/>
                 <Route path="/signin/with-username" exact component={ SigninUsername }/>
-                <Route path="/signin/with-phone" exact component={ SigninPhone }/>
-                <Route path="/signin/verify-account/:token" exact component={ VerifyAccount }/>
                 <Route path="/costumer-add" exact component={ CostumerAdd }/>
                 <Route path="/costumer-list" exact component={ CostumerList }/>
                 <Route path="/costumer/:id" exact component={ CostumerDetail }/>

@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import CostumerService from '../services/costumer';
 import RoutingInfo from '../components/RoutingInfo'
-import MainLayout from '../core/MainLayout';
+import Layout from '../core/Layout';
 import Alert from '../utils/Alert'
 
 const validationSchema = Yup.object({
@@ -130,11 +130,8 @@ export default function MakePay({match}) {
     }
 
     return (
-        <MainLayout>
-            <div className="flex flex-col mt-16 mx-auto max-w-sm md:max-w-md">
-                <RoutingInfo route={["Müşteri Listesi", "Ödeme Noktası"]}/>
-
-
+        <Layout>
+            <div>
                 {
                     isCompletedPayment ?
                     <div className="flex flex-col items-center justify-center border border-green-600 bg-green-50 p-4 rounded-md">
@@ -184,7 +181,7 @@ export default function MakePay({match}) {
 
                     <h2 className="font-medium mt-10">Ödeme Geçmişi</h2>
                     <p className="sub-header mb-3">Sola kaydırarak tüm geçmişe göz atabilirsiniz.</p>
-                    <div className="flex bg-gray-100 border rounded-md relative">
+                    <div className="flex bg-gray-100 border relative">
                          { 
                             paymentHistory.map((payment, i) => (
                                 currentIndex === i ?
@@ -235,6 +232,6 @@ export default function MakePay({match}) {
                         <div className="bg-gray-300 h-0.5 w-full"></div>
                     </div>
             </div>
-        </MainLayout>
+        </Layout>
     )
 }

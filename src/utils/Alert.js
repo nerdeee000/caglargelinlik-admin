@@ -3,13 +3,15 @@ import React from 'react'
 const success = (header, content) => (
     <div className="flex container rounded-md mx-auto w-auto bg-green-100 bg-opacity-25">
         <div className="max-h-full w-1.5 bg-green-500"></div>
-        <div className="flex p-5">
+        <div className="flex p-3">
             <svg xmlns="http://www.w3.org/2000/svg" className="flex-2 text-green-500 w-auto h-5 w-5 mt-1 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
-            <div className="flex-1">
-                <h3 className="antialiased text-green-800 font-medium">{header}</h3>
-                <p className="antialiased text-green-800 font-normal mt-1">{content}</p>
+            <div className="flex flex-col">
+                <div className="flex-1">
+                    <h3 className="antialiased text-green-800 font-medium">{header}</h3>
+                    <p className="antialiased text-green-800 font-normal mt-1">{content}</p>
+                </div>
             </div>
         </div>
     </div>

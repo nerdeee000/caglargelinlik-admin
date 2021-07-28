@@ -1,35 +1,40 @@
-import React, { useState } from 'react'
-import Navbar from '../components/Navbar'
+import React, { useState, useEffect } from 'react'
 import { isAuth } from '../pages/auth/Helpers';
 import { Redirect } from 'react-router-dom'
-
+import RoutingInfo from '../components/RoutingInfo'
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
+import Layout from '../core/Layout'
 export default function MainLayout({children}) {
-
     const [openMenu, setOpenMenu] = useState(false)
-    
+     
     const open = () => {
         setOpenMenu(true);
     }
 
     const props = { 
         openMenu: openMenu,
-        setOpenMenu: setOpenMenu
+        setOpenMenu: setOpenMenu,
     }
 
     return (
         <div>
             { 
                 isAuth() ?   
-                <button onClick={open} className="focus:outline-none m-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h8m-8 6h16" />
-                    </svg>
-                </button>  :  
+                <div className="flex">
+                    <div>
+                        <Navbar {...props}/>
+                    </div>
+                    <div className="flex flex-col flex-1">
+                        <RoutingInfo {...props} route={["efwjk", "klwnefj"]}/>
+                        <div className="flex-1">
+                            {children}
+                        </div>
+                        <Footer/>
+                    </div>
+                </div> :  
                 <Redirect to='/signin' />
             }
-            <Navbar { ...props }/>
-            { children }
-            
         </div>
     )
 }

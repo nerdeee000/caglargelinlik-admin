@@ -4,7 +4,7 @@ import cookie from 'js-cookie'
 export const setCookie = (key,value) => {
     if(window !== 'undefined'){
         cookie.set(key, value, {
-            expires: 1
+            expires: 5/24
         })
     }
 }
@@ -12,7 +12,7 @@ export const setCookie = (key,value) => {
 export const removeCookie = (key,value) => {
     if(window !== 'undefined'){
         cookie.remove(key, {
-            expires: 1
+            expires: 5/24
         })
     }
 }
@@ -39,18 +39,18 @@ export const removeLocalStorage = (key) => {
 export const authenticate = (response, next) => {
     console.log("Giriş yapıldı.");
     setCookie('token', response.token);
-    setLocalStorage('user', response.user);
+    setLocalStorage('user_name', response.user_name);
+    setLocalStorage('user_role', response.user_role);
     next();
 }
-
 
 
 export const isAuth = () => {
     if(window !== 'undefined'){
         const cookieChecked = getCookie('token');
         if(cookieChecked){
-            if(localStorage.getItem('user')){
-                return JSON.parse(localStorage.getItem('user'))
+            if(localStorage.getItem('user_name')){
+                return JSON.parse(localStorage.getItem('user_name'))
             }
             else{
                 return false
@@ -61,6 +61,7 @@ export const isAuth = () => {
 
 export const signout = () => {
     removeCookie('token');
-    removeLocalStorage('user');
-    console.log("Güvenli çıkış yapıldı.")
+    removeLocalStorage('user_name');
+    removeLocalStorage('user_role');
+    console.log("Güvenli çıkış yapıldı.");
 }

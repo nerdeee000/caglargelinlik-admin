@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import MainLayout from '../core/MainLayout'
+import Layout from '../core/Layout'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import ProductService from '../services/product'
@@ -105,11 +105,9 @@ export default function ProductAdd() {
 
 
     return (
-        <MainLayout>
-                <div className="flex flex-col mt-16 mx-auto mx-20 max-w-sm">
-                <RoutingInfo route={["Ürün Listesi", "Ürün Ekleme"]}/>
-
-                    <div className="flex items-center justify-center relative border border-4 h-20 rounded-md border-white border-dashed text-white mb-2 bg-gradient-to-r from-blue-500 to-blue-600">
+        <Layout>
+                <div className="flex flex-col">
+                    <div className="flex items-center justify-center relative border border-4 p-10 h-20 rounded-md border-white border-dashed text-white mb-2 bg-gradient-to-r from-blue-500 to-blue-600">
                         <input onChange={e=>handleFileItem(e, setFieldValue)} multiple className="absolute h-20 w-full" type="file" name="bride" id=""/>
                         <div className="flex flex-col items-center">
                             <p className="font-bold">RESİM SEÇİNİZ</p>
@@ -153,6 +151,6 @@ export default function ProductAdd() {
                     <button disabled={!isValid} className="btn btn-primary mt-5"onClick={handleSubmit}>Kaydet</button>
 
                 </div>
-        </MainLayout>
+        </Layout>
     )
 }
