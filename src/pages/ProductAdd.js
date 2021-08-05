@@ -14,14 +14,12 @@ const validationSchema = Yup.object({
 
 export default function ProductAdd() {
 
-    const refreshPage = () => {
-        window.location.reload(false);
-    }
 
     const { setFieldValue, handleSubmit, handleChange, values, errors, isValid } = useFormik({
         initialValues: {
             product_img_array: [],
             product_code:'',
+            product_type:'',
             product_name:'',
             product_property:[],
             product_property_item: ''
@@ -32,20 +30,22 @@ export default function ProductAdd() {
             for (let i = 0; i < product_img_array.length; i++) {
                 formData.append('bride', product_img_array[i].file)                
             }
+            for (let i = 0; i < product_property.length; i++) {
+                formData.append('product_property', product_property[i]);             
+            }
             const config = {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
             };
             formData.append('product_code', product_code);
+            formData.append('product_type', product_type);
             formData.append('product_name', product_name);
-            formData.append('product_property', product_property);
 
             ProductService.saveProduct(formData, config)
             .then((response)=>{
                 console.log(response)
                 console.log("Product save successfully");
-                refreshPage()
             })
             .catch((error) => {
                 console.log(error.response.data.error);
@@ -55,7 +55,7 @@ export default function ProductAdd() {
     
 
 
-    const { product_img_array, product_code, product_name, product_property_item, product_property } = values;
+    const { product_img_array, product_code, product_name, product_property_item, product_property, product_type } = values;
 
     
     const handlePropertyItem = (e, setFieldValue) => {
@@ -71,7 +71,6 @@ export default function ProductAdd() {
             setFieldValue(product_img_array);
         }
     }
-
     
     const handleFileItem = (e, setFieldValue) => {
         setFieldValue('product_img', e.target.files[0])
@@ -85,7 +84,7 @@ export default function ProductAdd() {
     const handleKeyDown = (e, setFieldValue) => {
         if (e.key === 'Enter') {
             setFieldValue('product_property_item', '')
-            setFieldValue('product_property', [...product_property, product_property_item]);
+            setFieldValue('product_property', [...product_property, product_property_item.trim()]);
         }
     }
 
@@ -129,6 +128,13 @@ export default function ProductAdd() {
                         }
                     </div>
                     
+                    <select className="form-control mb-3" onChange={handleChange} name="product_type" id="product_type">
+                        <option>Seçiniz</option>
+                        <option>Gelinlik</option>
+                        <option>Nişanlık</option>
+                        <option>Bindallık</option>
+                        <option>Aksesuar</option>
+                    </select>
                     <input type="text" className="form-control mb-2" name="product_code" value={product_code} onChange={handleChange} placeholder="Ürün Kodu"/>
                     { errors.product_code ? <p className="error-message">{errors.product_code}</p> : null}
                     <input type="text" className="form-control mb-2" name="product_name" value={product_name} onChange={handleChange} placeholder="Ürün Adı"/>
@@ -148,7 +154,7 @@ export default function ProductAdd() {
 
                     </div>
                     
-                    <button disabled={!isValid} className="btn btn-primary mt-5"onClick={handleSubmit}>Kaydet</button>
+                    <button disabled={!isValid} className="btn btn-primary mt-5" onClick={handleSubmit}>Kaydet</button>
 
                 </div>
         </Layout>

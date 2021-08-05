@@ -9,7 +9,7 @@ import Alert from '../../utils/Alert'
 
 const validationSchema = Yup.object({
     username: Yup.string().required("Zorunlu alan. Boş Bırakılamaz!").max(20, "En fazla 20(On) karakter sınırı bulunmaktadır."),
-    password: Yup.string().required("Zorunlu alan. Boş Bırakılamaz!").max(15, "En fazla 15(On beş) karakter sınırı bulunmaktadır."),
+    password: Yup.string().required("Zorunlu alan. Boş Bırakılamaz!").max(35, "En fazla 35(otuz beş) karakter sınırı bulunmaktadır."),
 });
 
 export default function SigninWithUsername() {

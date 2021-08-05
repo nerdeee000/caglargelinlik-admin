@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { data, data01, data02 } from './data'
 import {Pie, PieChart, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Area} from 'recharts'
+import { BarChart, Bar, Cell, Legend, ResponsiveContainer } from 'recharts';
 import Alert from '../utils/Alert'
 import CostumerService from '../services/costumer'
 import { Link } from 'react-router-dom'
@@ -9,11 +9,22 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import Confetti from 'react-confetti'
+import { css } from "@emotion/react";
+import ScaleLoader from "react-spinners/ScaleLoader";
+
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: black;
+`;
 
 const validationSchema = Yup.object({
     process_type: Yup.string().required("Zorunlu alan. Boş Bırakılamaz!"),
     process_amount: Yup.number().required("Zorunlu alan. Boş Bırakılamaz!"),
 });
+
 
 export default function Home() {
 
@@ -27,6 +38,7 @@ export default function Home() {
         return MyDateString;
     }
 
+    let [loading, setLoading] = useState(true);
     const [pageNumber, setPageNumber] = useState(0);
     
     //PaymentData State
@@ -38,7 +50,9 @@ export default function Home() {
     //Chart State
     const [earningChart, setEarningChart] = useState([]);
     const [damageChart, setDamageChart] = useState([]);
-    
+    const [workerChart, setWorkerChart] = useState([]);
+    const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState("");
+
 
     //DatePicker Handle State
     const [startDate, setStartDate] = useState("");
@@ -98,6 +112,9 @@ export default function Home() {
             setPaymentData(paymentData)
             setFilterPaymentData(paymentData)
 
+            const workerFind = await CostumerService.findWorker();
+            setWorkerChart(workerFind);
+
             const earningData = await CostumerService.getEarningChart();
             setEarningChart(earningData)
             earningData.map(item =>(
@@ -109,6 +126,9 @@ export default function Home() {
             damageData.map(item =>(
                 setPaymentDataTotalDamage(curr => curr + item.process_amount)
             ));
+
+            const monthWorker = await CostumerService.monthWorker();
+            setEmployeeOfTheMonth(monthWorker)
 
         }
         init();
@@ -193,13 +213,9 @@ export default function Home() {
                                         { errors.process_type ? <p className="error-message">{errors.process_type}</p> : null}
                                         <input type="text" onChange={handleChange} value={process_amount} name="process_amount" className="form-control mb-2" placeholder="İşlem Tutarı"/>
                                         { errors.process_amount ? <p className="error-message">{errors.process_amount}</p> : null}
-                                        <button onClick={handleSubmit} type="submit" className="btn btn-danger">Gider Ekle</button>
+                                        <button onClick={handleSubmit} type="submit" className="btn btn-block btn-danger">Gider Ekle</button>
                                     </div>
-                                    
                                 </div>
-
-
-                            
 
                             </div>
                         
@@ -245,21 +261,46 @@ export default function Home() {
                                     pageCount={Math.ceil(filterPaymentData.length/dataPerPage)}
                                     pageClassName={'flex items-center justify-center p-4 rounded-full w-5 h-5'}
                                 />
+                                <div>
+                                <BarChart
+                                        width={500}
+                                        height={300}
+                                        data={workerChart}
+                                        margin={{
+                                            top: 30,
+                                            right: 30,
+                                            left: 30,
+                                            bottom: 20,
+                                        }}
+                                    >
+                                    <XAxis dataKey="name" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Bar dataKey="countOrder" fill="#8884d8" />
+                                </BarChart>
+                                </div>
                             </div>
                             
                         </div>
-                        <div className="flex-1">
-                                        <div className="shadow-lg m-2 border rounded-lg">
-                                            <AreaChart width={350} height={350} data={data}>
-                                                <Tooltip/>
-                                                <Area type="monotone" dataKey="pv" stroke="#557EF7" strokeWidth="5" fillOpacity={1} fill="transparent"/>
-                                                <Area type="monotone" dataKey="uv" stroke="#557EF7" strokeWidth="5" fillOpacity={1} fill="transparent"/>
-                                            </AreaChart>
-                                        </div>
-                                    </div>
                 </div> : 
                 <div className="mx-10">
                     <Alert warn header="Görüntülenme Sağlanamıyor" content="Analizler yalnızca yönetici kadrosuna açıktır. Diğer tüm işlemler için sayfada gezinebilmek üyelere açıktır."/>
+                    <div className="flex flex-col mt-10 justify-center items-center">
+                        <Confetti
+                            width={1800}
+                            height={400}
+                        />
+                        {
+                            employeeOfTheMonth ? 
+                            <p className="font-bold text-3xl text-blue-700 mt-4">{employeeOfTheMonth}</p> : 
+                            <div className="flex flex-col items-center">
+                                <ScaleLoader color="#275efe" radius="2" margin="4" width="4" height="35"/>
+                                <p className="text-blue-700 animate-pulse">YÜKLENİYOR...</p>
+                            </div>
+                        }
+                        <p className="font-bold text-xl mt-4">Tebrikler ayın elemanı sizsiniz 🎉🎉🎉</p>
+                        <p className="sub-header mt-2"><span className="font-bold">DİPNOT:</span> Ayın sonuna kadar sürekli güncellenmektedir. Ayın başında tekrar sıfırlanmaktadır.</p>
+                    </div>
                 </div>
             }
         </Fragment>

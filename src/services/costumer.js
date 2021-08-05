@@ -107,6 +107,11 @@ const findWorker = async () => {
     return response.data;
 }
 
-const costumer = { saveCostumer, listCostumer, detailCostumer, getRemainingAmount, makePay, cancelMakePay, deleteCostumer, getPaymentData, addDamage, getEarningChart, getDamageChart, findWorker };
+const monthWorker = async () => {
+    const response = await axios.get(baseURL + 'month-worker') ;
+    return response.data;
+}
+
+const costumer = { saveCostumer, listCostumer, detailCostumer, getRemainingAmount, makePay, cancelMakePay, deleteCostumer, getPaymentData, addDamage, getEarningChart, getDamageChart, findWorker, monthWorker };
 
 export default costumer;
